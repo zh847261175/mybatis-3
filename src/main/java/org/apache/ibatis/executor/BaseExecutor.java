@@ -144,7 +144,7 @@ public abstract class BaseExecutor implements Executor {
       throw new ExecutorException("Executor was closed.");
     }
     if (queryStack == 0 && ms.isFlushCacheRequired()) {
-      clearLocalCache();11
+      clearLocalCache();
     }
     List<E> list;
     try {
