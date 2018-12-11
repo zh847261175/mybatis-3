@@ -144,7 +144,7 @@ public abstract class BaseExecutor implements Executor {
       throw new ExecutorException("Executor was closed.");
     }
     if (queryStack == 0 && ms.isFlushCacheRequired()) {
-      clearLocalCache();
+      clearLocalCache();11
     }
     List<E> list;
     try {
@@ -345,7 +345,7 @@ public abstract class BaseExecutor implements Executor {
   public void setExecutorWrapper(Executor wrapper) {
     this.wrapper = wrapper;
   }
-  
+
   private static class DeferredLoad {
 
     private final MetaObject resultObject;
