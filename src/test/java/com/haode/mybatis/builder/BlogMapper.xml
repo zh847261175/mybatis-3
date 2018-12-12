@@ -22,9 +22,34 @@
 
 <mapper namespace="com.haode.mybatis.BlogMapper">
 
+<cache eviction="FIFO" size="512"  flushInterval="60000"  readOnly="true"/>
 
-  <select id="selectAllCity" resultType="map">
-    select name from city
+  <select id="selectAllCity" resultType="map" useCache="true">
+    select name from city limit 20
   </select>
+
+    <resultMap id="city" type="com.haode.mybatis.builder.entity.City">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="district" column="district"/>
+        <result property="population" column="population"/>
+        <association property="country" column="countrycode" select="selectCountry" javaType="com.haode.mybatis.builder.entity.Country">
+            <result column="code" property="code"/>
+            <result column="name" property="name"/>
+            <result column="continent" property="continent"/>
+            <result column="region" property="region"/>
+        </association>
+    </resultMap>
+    <select id="selectCityAndCountry" resultMap="city">
+        select * from city limit 1
+    </select>
+
+    <select id="selectCountry" resultType="com.haode.mybatis.builder.entity.Country">
+        select * from country where code =#{countrycode}
+    </select>
+
+    <insert id="addOneUser" parameterType="com.haode.mybatis.builder.entity.User" keyProperty="id">
+        insert  into user (name) values (#{name})
+    </insert>
 
 </mapper>

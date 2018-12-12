@@ -1,5 +1,7 @@
 package com.haode.mybatis.builder;
 
+import com.haode.mybatis.builder.entity.City;
+import com.haode.mybatis.builder.entity.User;
 import org.apache.ibatis.builder.xml.XMLConfigBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.*;
@@ -47,7 +49,26 @@ public class MyJavaBuilderTest {
 	public void cacheSecond(){
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		SqlSession sqlSession2 = sqlSessionFactory.openSession();
-		List<HashMap> name = sqlSession.selectList("com.haode.mybatis.BlogMapper.selectAllCity",null,new RowBounds(0,20));
-		name = sqlSession2.selectList("com.haode.mybatis.BlogMapper.selectAllCity",null,new RowBounds(0,20));
+		List<HashMap> name = sqlSession.selectList("com.haode.mybatis.BlogMapper.selectAllCity",null);
+		sqlSession.commit();
+		name = sqlSession2.selectList("com.haode.mybatis.BlogMapper.selectAllCity",null);
 	}
+	@Test
+	public void lazeEnabledAndagreessiveProxyEnabledTest(){
+		SqlSession session = sqlSessionFactory.openSession();
+		City cites = session.selectOne("com.haode.mybatis.BlogMapper.selectCityAndCountry");
+		System.out.println(cites.getId());
+		//		System.out.println(objects);
+	}
+
+	@Test
+	public void useGeneratedKeysTest(){
+		SqlSession session = sqlSessionFactory.openSession();
+		User user = new User();
+		user.setName("zhuhao");
+		int insert = session.insert("com.haode.mybatis.BlogMapper.addOneUser", user);
+		session.commit();
+		System.out.println(user.getId());
+	}
+
 }
